@@ -28,11 +28,11 @@ st->op1->op2->op3->op4->op5->op6->op7->e
 ##### 3.2.1 redis的问题
 ```flow
 st=>start: Start
-op1=>operation: redis的常用数据类型
-op2=>operation: redis数据如何持久化RDB/AOF
-op3=>operation: redis的缓存策略
+op1=>operation: redis的常用数据类型(string/hash/list/set&zset)
+op2=>operation: redis数据如何持久化(RDB数据快照/AOF文件追加)
+op3=>operation: redis的缓存策略(noeviction/allkeys-lru/volatile-lru/allkeys-random/volatile-random/volatile-ttl)
 op4=>operation: redis的有序集合的底层实现(跳表)
-op5=>operation: redis的集群搭建，redis高可用
+op5=>operation: redis的集群搭建，redis高可用(开放式问题)
 op6=>operation: redis是否支持事务(开放式问题)
 cond1=>condition: 是否需要深入redis?
 e=>end
@@ -44,17 +44,18 @@ cond1(no)->e
 ```flow
 st=>start: Start
 op1=>operation: 是否熟悉SQL? where & having 区别
-op2=>operation: mysql的有哪些存储引擎
-op3=>operation: 事务的四个特征ACID
+op2=>operation: mysql的有哪些存储引
+op3=>operation: 事务的四个特征ACID(redo log, undo log, 读写锁，MVVC)
 op4=>operation: 如何优化mysql的query,explain,slow query log
-op5=>operation: 索引的问题(实现，索引类型，组合索引，聚合索引)
-op6=>operation: 事务的底层实现,mysql如何做到原子性
-op7=>operation: 为什么要使用外键？优点缺点
-op8=>operation: mysql的高可用
+op5=>operation: 索引的问题(实现，索引类型，组合索引，覆盖索引)
+op6=>operation: 事务的底层实现,mysql如何做到原子性(undo log)
+op7=>operation: innodb底层实现，什么是回表
+op8=>operation: 为什么要使用外键？优点缺点
+op9=>operation: mysql的高可用(主从master-slave)
 cond1=>condition: 是否继续深入mysql?
 e=>end
 st->op1->op2->op3->op4->op5->cond1
-cond1(yes)->op6->op7->op8->e
+cond1(yes)->op6->op7->op8->op9->e
 cond1(no)->e
 ```
 ##### 3.2.3 mongodb的问题
@@ -96,37 +97,51 @@ op10->op11->op12->cond3
 cond3(yes)->op13->e
 cond3(no)->e
 ```
-#### 3.4 TCP/IP，HTTP的相关问题
+#### 3.4 Celery/rabbitmq队列问题
+  Celery作为python编写的一个简单、灵活且可靠、处理大量消息的分布式系统，在处理耗时很长的阻塞任务，几乎是python唯一选择。而后端的broker可以采用RabbitMQ，redis，mq等各种消息队列实现。
+```flow
+st=>start: Start
+op1=>operation: 简单介绍Celery，经典生产者/消费者模型。
+op2=>operation: 介绍下实际生产环境你们如何使用Celery
+op3=>operation: 如何处理超时任务(task_soft_time_limit),为什么建议设置这个参数,如何任务超时，怎么办。
+op4=>operation: 如何处理Celery可能的内存泄漏，或者你代码产生的内存泄漏(worker_max_tasks_per_child)
+op5=>深入问题使用过分布式锁吗？(redis实现之单节点实现，多节点实现redlock)
+e=>end
+st->op1->op2->op3->op4->op5->e
+```
+#### 3.5 TCP/IP，HTTP的相关问题
   很多人在工作很多年后，其实对TCP/IP协议栈已经不怎么熟悉，一般也就知道三次握手和四次握手, TCP/IP协议几层等。原则是知道这些就足够了，我们需要重点考察HTTP协议，以及相关的东东JSON/XML，websocket， RESTFUL，RPC问题。
 ```flow
 st=>start: Start
-op1=>operation: 介绍下HTTP的方法(GET，PUT，POST，DELETE等)
+op1=>operation: 介绍下HTTP的方法(GET，PUT，POST，PATCH，DELETE等)
 op2=>operation: 经典问题GET， POST区别
-op3=>operation: json和xml相比有什么优点
-op4=>operation: 如何主动push消息到浏览器
-op5=>operation: RESTFUL API设计的特点
-op6=>operation: API设计问题，删除对象API的设计
+op3=>operation: GET请求可以携带HTTP BODY吗？
+op4=>operation: json和xml相比有什么优点
+op5=>operation: 如何主动push消息到浏览器
+op6=>operation: RESTFUL API设计的特点(URI,资源，请求，无状态)
+op7=>operation: 还了解其他WebService API风格吗？说明优缺点，为什么这么设计(开放式问题)
 cond1=>condition: 用过XML吗？
 e=>end
-st->op1->op2->cond1
-cond1(yes)->op3->op4
-cond1(no)->op4
+st->op1->op2->op3->cond1
+cond1(yes)->op4->op5
+cond1(no)->op5
 op4->op5->op6->e
 ```
-#### 3.5 linux/BSD，docker问题
+#### 3.6 linux/BSD，docker问题
    因为后台工作的关系，这里需要候选人对linux下工作方法很熟悉，尝试问一点linux的基本概念性问题；同时因为采用docker来跑本地服务，需要候选人能熟练使用docker。
 ```flow
 st=>start: Start
 op1=>operation: 解释进程，线程，僵尸进程，守护进程
 op2=>operation: 如何查看进程
 op3=>operation: 如何查看网络服务/端口占用
-op4=>operation: 如何进入docker bash环境
-op5=>operation: docker的底层实现cgroup, namespace隔离等
-op6=>operation: k8s/swarm容器编排问题
+op4=>operation: 如何进入docker bash环境(docker run -it container_id/container_name)
+op5=>operation: 如何让docker挂载卷(映射本地目录，docker volume ls)
+op6=>operation: docker的底层实现cgroup, namespace隔离等
+op7=>operation: k8s/swarm容器编排问题
 cond1=>condition: 是否深入docker
 e=>end
-st->op1->op2->op3->op4->cond1
-cond1(yes)->op5->op6->e
+st->op1->op2->op3->op4->op5->cond1
+cond1(yes)->op6->op7->e
 cond1(no)->e
 ```
 #### 3.6 一些开放式技术问题
@@ -134,7 +149,7 @@ cond1(no)->e
 ```flow
 st=>start: Start
 sub1=>subroutine: 根据时机情况选择问题
-op1=>operation: 如何处理日志，清理日志。
+op1=>operation: 如何处理日志，清理日志(ETL)。
 op2=>operation: 浏览器发起请求后，不能正确得到服务器相应结果,如何debug
 op3=>operation: 现在发现某段python代码允许很慢，已经知道这段代码主要消耗的资源是CPU，如何优化
 op4=>operation: 什么是IO多路复用，epoll，边缘触发/水平触发。
