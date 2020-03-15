@@ -1,6 +1,6 @@
 # 后端面试流程归纳总结
 ## 概述
-  近日，在下被抽出作为面试考官对面试者进行技术面试，中间过程不再复述。但是回顾最近自己面试考官的表现，特别是经过有丰富面试经验的人指出我的问题，我发现自己在作为面试考官的时候，是有很多问题的，最大的问题，就是没有形成一套模式化，流程化，有迹可循的面试题集合，问的题有时候太跳跃，缺少引导性；在问题措辞上，有时候太官方，不够平易近人，或者不容易让人理解；没有形成记忆惯性，漏了部分问题。因此，写下这遍文章作为以后作为技术面试的一个参考。
+  面试是一件非常严肃的事情，几方面来说:1.为公司选择能力满足公司开发需求的人，这是为公司负责; 2.出来找工作都不容易，面试者也希望进入一家好的公司，能和公司一起成长，这是为被面试者负责；3.如果招聘进来的人，最后发现因为面试比较水，而蒙混过关，在实际工作合作的时候，会发现非常痛苦，这是为自己负责。以下是在下归纳总结的面试流程和面试问题。问题和流程都会根据实际情况持续更新，最后还准备加入打分项，对每个问题做到权重有多少分，能给到公司，被面试者一个可量化评估的分数。
 ## 面试题基本流程
 ### 0.看候选人简历
   大概扫一眼候选人的项目经历和技能特点，擅长什么。对候选人有个初步了解。
@@ -28,11 +28,11 @@ st->op1->op2->op3->op4->op5->op6->op7->e
 ##### 3.2.1 redis的问题
 ```flow
 st=>start: Start
-op1=>operation: redis的常用数据类型(string/hash/list/set&zset)
+op1=>operation: redis的常用数据类型(string/hash/list/set&zset/, 特殊场景使用bitmaps/Hyperloglogs/Steams/geospatial)
 op2=>operation: redis数据如何持久化(RDB数据快照/AOF文件追加)
 op3=>operation: redis的缓存策略(noeviction/allkeys-lru/volatile-lru/allkeys-random/volatile-random/volatile-ttl)
-op4=>operation: redis的有序集合的底层实现(跳表)
-op5=>operation: redis的集群搭建，redis高可用(开放式问题)
+op4=>operation: redis的有序集合的底层实现(跳表skiplist)
+op5=>operation: redis的集群搭建(三种方式:主从,哨兵,cluster, etc非官方)
 op6=>operation: redis是否支持事务(开放式问题)
 cond1=>condition: 是否需要深入redis?
 e=>end
@@ -44,12 +44,12 @@ cond1(no)->e
 ```flow
 st=>start: Start
 op1=>operation: 是否熟悉SQL? where & having 区别
-op2=>operation: mysql的有哪些存储引
+op2=>operation: mysql的有哪些存储引擎
 op3=>operation: 事务的四个特征ACID(redo log, undo log, 读写锁，MVVC)
 op4=>operation: 如何优化mysql的query,explain,slow query log
 op5=>operation: 索引的问题(实现，索引类型，组合索引，覆盖索引)
 op6=>operation: 事务的底层实现,mysql如何做到原子性(undo log)
-op7=>operation: innodb底层实现，什么是回表
+op7=>operation: innodb底层实现，什么是回表(B+树，B树)
 op8=>operation: 为什么要使用外键？优点缺点
 op9=>operation: mysql的高可用(主从master-slave)
 cond1=>condition: 是否继续深入mysql?
@@ -105,27 +105,44 @@ op1=>operation: 简单介绍Celery，经典生产者/消费者模型。
 op2=>operation: 介绍下实际生产环境你们如何使用Celery
 op3=>operation: 如何处理超时任务(task_soft_time_limit),为什么建议设置这个参数,如何任务超时，怎么办。
 op4=>operation: 如何处理Celery可能的内存泄漏，或者你代码产生的内存泄漏(worker_max_tasks_per_child)
-op5=>深入问题使用过分布式锁吗？(redis实现之单节点实现，多节点实现redlock)
+op5=>operation: 深入问题使用过分布式锁吗？(redis实现之单节点实现，多节点实现redlock)
 e=>end
 st->op1->op2->op3->op4->op5->e
 ```
-#### 3.5 TCP/IP，HTTP的相关问题
-  很多人在工作很多年后，其实对TCP/IP协议栈已经不怎么熟悉，一般也就知道三次握手和四次握手, TCP/IP协议几层等。原则是知道这些就足够了，我们需要重点考察HTTP协议，以及相关的东东JSON/XML，websocket， RESTFUL，RPC问题。
+#### 3.5 网络相关的问题
+##### 3.5.1 TCP/IP相关问题
+  TCP/IP的问题一般比较基础，任何一本TCP/IP书籍都有详细阐述，但是因为工作原因，部分开发可能忘记了部分细节，我觉得这是可以理解的，但是面试者既然知道来面试，我觉得花点时间把这部分知识重新看一下，并不过分。
+```flow
+st=>start: Start
+op1=>operation: 介绍下TCP/IP协议分为几层，每层分别是什么，什么是ISO网络模型
+op2=>operation: 详细描述下TCP/IP三次握手。
+op3=>operation: 为什么TCP/IP建立连接需要三次握手，为什么不能是2次？
+op4=>operation: 详细介绍下TCP/IP四次握手，什么是TIME_WAIT状态
+cond1=>condition: 是否深入？
+e=>end
+st->op1->op2->cond1
+cond1(yes)->op3
+cond1(no)->op4
+op3->op4->e
+```
+##### 3.5.2 HTTP相关问题
+  HTTP协议是我们重点考察的部分，以及相关的东东JSON/XML，websocket， RESTFUL，RPC问题。
 ```flow
 st=>start: Start
 op1=>operation: 介绍下HTTP的方法(GET，PUT，POST，PATCH，DELETE等)
-op2=>operation: 经典问题GET， POST区别
-op3=>operation: GET请求可以携带HTTP BODY吗？
-op4=>operation: json和xml相比有什么优点
-op5=>operation: 如何主动push消息到浏览器
-op6=>operation: RESTFUL API设计的特点(URI,资源，请求，无状态)
-op7=>operation: 还了解其他WebService API风格吗？说明优缺点，为什么这么设计(开放式问题)
+op2=>operation: 列举你所知道HTTP Status Code，越多越好，越详细越好，使用场景
+op3=>operation: 经典问题GET， POST区别
+op4=>operation: GET请求可以携带HTTP BODY吗？
+op5=>operation: json和xml相比有什么优点
+op6=>operation: 如何主动push消息到浏览器
+op7=>operation: RESTFUL API设计的特点(URI,资源，请求，无状态)
+op8=>operation: 还了解其他WebService API风格吗？说明优缺点，为什么这么设计(开放式问题graphQL, websocket)
 cond1=>condition: 用过XML吗？
 e=>end
-st->op1->op2->op3->cond1
-cond1(yes)->op4->op5
+st->op1->op2->op3->op4->cond1
+cond1(yes)->op5->op6
 cond1(no)->op5
-op4->op5->op6->e
+op5->op6->op7->op8->e
 ```
 #### 3.6 linux/BSD，docker问题
    因为后台工作的关系，这里需要候选人对linux下工作方法很熟悉，尝试问一点linux的基本概念性问题；同时因为采用docker来跑本地服务，需要候选人能熟练使用docker。
@@ -151,8 +168,8 @@ st=>start: Start
 sub1=>subroutine: 根据时机情况选择问题
 op1=>operation: 如何处理日志，清理日志(ETL)。
 op2=>operation: 浏览器发起请求后，不能正确得到服务器相应结果,如何debug
-op3=>operation: 现在发现某段python代码允许很慢，已经知道这段代码主要消耗的资源是CPU，如何优化
-op4=>operation: 什么是IO多路复用，epoll，边缘触发/水平触发。
+op3=>operation: 现在发现某段python代码运行很慢，已经知道这段代码主要消耗的资源是CPU，如何优化
+op4=>operation: 什么是IO多路复用，epoll，边缘触发ET/水平触发LT。
 e=>end
 st->op1->op2->op3->op4->e
 ```
