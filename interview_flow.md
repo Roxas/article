@@ -29,15 +29,16 @@ st->op1->op2->op3->op4->op5->op6->op7->e
 ```flow
 st=>start: Start
 op1=>operation: redis的常用数据类型(string/hash/list/set&zset/, 特殊场景使用bitmaps/Hyperloglogs/Steams/geospatial)
-op2=>operation: redis数据如何持久化(RDB数据快照/AOF文件追加)
+op2=>operation: redis数据如何持久化(RDB数据快照/AOF文件追加/混合模式，结合RDB,AOF优点)
 op3=>operation: redis的缓存策略(noeviction/allkeys-lru/volatile-lru/allkeys-random/volatile-random/volatile-ttl)
 op4=>operation: redis的有序集合的底层实现(跳表skiplist)
 op5=>operation: redis的集群搭建(三种方式:主从,哨兵,cluster, etc非官方)
 op6=>operation: redis是否支持事务(开放式问题)
+op7=>operation: 深入问题使用过分布式锁吗？(redis实现之单节点实现，多节点实现redlock)
 cond1=>condition: 是否需要深入redis?
 e=>end
 st->op1->op2->op3->cond1
-cond1(yes)->op4->op5->op6->e
+cond1(yes)->op4->op5->op6->op7->e
 cond1(no)->e
 ```
 ##### 3.2.2 mysql的问题
@@ -105,9 +106,8 @@ op1=>operation: 简单介绍Celery，经典生产者/消费者模型。
 op2=>operation: 介绍下实际生产环境你们如何使用Celery
 op3=>operation: 如何处理超时任务(task_soft_time_limit),为什么建议设置这个参数,如何任务超时，怎么办。
 op4=>operation: 如何处理Celery可能的内存泄漏，或者你代码产生的内存泄漏(worker_max_tasks_per_child)
-op5=>operation: 深入问题使用过分布式锁吗？(redis实现之单节点实现，多节点实现redlock)
 e=>end
-st->op1->op2->op3->op4->op5->e
+st->op1->op2->op3->op4->e
 ```
 #### 3.5 网络相关的问题
 ##### 3.5.1 TCP/IP相关问题
