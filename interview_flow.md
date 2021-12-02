@@ -15,7 +15,7 @@
 st=>start: Start
 op1=>operation: 介绍最近所做项目(这里默认使用了django/flask框架)
 op2=>operation: 简述下从浏览器(req)到后端web app的resp的流程(越详细越好，开放式问题)
-op3=>operation: 反向代理到后端app所用协议， WSGI协议(重点考察)，CGI协议，HTTP协议
+op3=>operation: 反向代理到后端app所用协议， WSGI协议(重点考察)，HTTP协议
 op4=>operation: 后端使用哪种wsgi服务uWSGI/gunicorn
 op5=>operation: 应用服务器如何扩容？增加进程，多加机器，数据库扩容
 op6=>operation: 定时任务/长时间任务，celery相关
@@ -51,8 +51,8 @@ op4=>operation: 如何优化mysql的query,explain,slow query log
 op5=>operation: 索引的问题(实现，索引类型，组合索引，覆盖索引)
 op6=>operation: 事务的底层实现,mysql如何做到原子性(undo log)
 op7=>operation: innodb底层实现，什么是回表(B+树，B树)
-op8=>operation: 为什么要使用外键？优点缺点
-op9=>operation: mysql的高可用(主从master-slave)
+op8=>operation: 列举索引失效的原因
+op9=>operation: 事务的隔离级别(Read uncommitted, Read committed, Repeatable read, :Serializable)
 cond1=>condition: 是否继续深入mysql?
 e=>end
 st->op1->op2->op3->op4->op5->cond1
@@ -83,7 +83,7 @@ op8=>operation: 协程的底层实现
 op9=>operation: 介绍下更多的gc算法
 op10=>operation: 什么是循环引用
 op11=>operation: 介绍下__init__.py的用法
-op12=>operation: 什么是循环import
+op12=>operation: python生成一个字符串有多少种方式，a + b + c有什么缺点
 op13=>operation: 元类/python C扩展/import机制
 cond1=>condition: 是否深入协程
 cond2=>condition: 是否深入gc
@@ -102,7 +102,7 @@ cond3(no)->e
   Celery作为python编写的一个简单、灵活且可靠、处理大量消息的分布式系统，在处理耗时很长的阻塞任务，几乎是python唯一选择。而后端的broker可以采用RabbitMQ，redis，mq等各种消息队列实现。
 ```flow
 st=>start: Start
-op1=>operation: 简单介绍Celery，经典生产者/消费者模型。
+op1=>operation: 有没有用过消息队列，为什么要使用消息队列。
 op2=>operation: 介绍下实际生产环境你们如何使用Celery
 op3=>operation: 如何处理超时任务(task_soft_time_limit),为什么建议设置这个参数,如何任务超时，怎么办。
 op4=>operation: 如何处理Celery可能的内存泄漏，或者你代码产生的内存泄漏(worker_max_tasks_per_child)
@@ -130,19 +130,15 @@ op3->op4->e
 ```flow
 st=>start: Start
 op1=>operation: 介绍下HTTP的方法(GET，PUT，POST，PATCH，DELETE等)
-op2=>operation: 列举你所知道HTTP Status Code，越多越好，越详细越好，使用场景
+op2=>operation: 列举你所知道HTTP Status Code/列举HTTP header字段
 op3=>operation: 经典问题GET， POST区别
 op4=>operation: GET请求可以携带HTTP BODY吗？
-op5=>operation: json和xml相比有什么优点
+op5=>operation: 什么是JWT，JWT的使用场景，JWT特点
 op6=>operation: 如何主动push消息到浏览器
 op7=>operation: RESTFUL API设计的特点(URI,资源，请求，无状态)
 op8=>operation: 还了解其他WebService API风格吗？说明优缺点，为什么这么设计(开放式问题graphQL, websocket)
-cond1=>condition: 用过XML吗？
 e=>end
-st->op1->op2->op3->op4->cond1
-cond1(yes)->op5->op6
-cond1(no)->op5
-op5->op6->op7->op8->e
+st->op1->op2->op3->op4->op5->op6->op7->op8->e
 ```
 #### 3.6 linux/BSD，docker问题
    因为后台工作的关系，这里需要候选人对linux下工作方法很熟悉，尝试问一点linux的基本概念性问题；同时因为采用docker来跑本地服务，需要候选人能熟练使用docker。
@@ -151,14 +147,15 @@ st=>start: Start
 op1=>operation: 解释进程，线程，僵尸进程，守护进程
 op2=>operation: 如何查看进程
 op3=>operation: 如何查看网络服务/端口占用
-op4=>operation: 如何进入docker bash环境(docker run -it container_id/container_name)
-op5=>operation: 如何让docker挂载卷(映射本地目录，docker volume ls)
+op4=>operation: 如何进入docker bash环境(docker run -it container_id/container_name) sh/bash
+op5=>operation: 如何通过docker命令查看日志 docker logs -f container_id
 op6=>operation: docker的底层实现cgroup, namespace隔离等
-op7=>operation: k8s/swarm容器编排问题
+op7=>operation: 如何优化docker镜像打包(打包时间，镜像大小)
+op8=>operation: k8s/swarm容器编排工具用来做什么的
 cond1=>condition: 是否深入docker
 e=>end
 st->op1->op2->op3->op4->op5->cond1
-cond1(yes)->op6->op7->e
+cond1(yes)->op6->op7->op8->e
 cond1(no)->e
 ```
 #### 3.6 一些开放式技术问题
