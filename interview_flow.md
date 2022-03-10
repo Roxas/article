@@ -61,14 +61,14 @@ graph TB
 graph TB
     a[str的10个成员函数] --> d[is和==的区别] --> g[解释装饰器] --> j[深拷贝,浅拷贝] --> m[解释GIL]
     b[python的内置类型,可变,不可变] --> e[python字符串生成方式,a+b+c的缺点] --> h[装饰器的应用场景] --> k[python的多进程,多线程] --> n[gc的底层实现]
-    c[dict的底层实现] --> f[解释上下文管理器] --> i[装饰器和元类的区别] --> l[python代码做性能优化cprofile,line_profiler,memory_profiler] --> o[什么是协程,协程的优点,协程底层实现] --> p[python的import包管理机制]
+    c[dict的底层实现] --> f[解释上下文管理器] --> i[装饰器和元类的区别] --> l[yield的实现原理] --> o[python代码做性能优化cprofile,line_profiler,memory_profiler] --> p[python的import包管理机制]
 ```
 ##### 3.4.2 python web或者其他python应用
 ```mermaid
 graph TB
     a[web框架] --> d[url路由] --> g[框架中间件] --> j[提高web服务器并发量] --> m[web框架的网络处理架构,同步,异步]
     b[wsgi,asgi协议] --> e[orm的优点缺点] --> h[你如何组织你的web项目] --> k[web项目的异常处理] --> n[pyhon web单元测试]
-    c[xpath] --> f[列举10个你最常用的python] --> i[numpy,pandas] --> o[python运维] --> p[pyqt]
+    c[xpath] --> f[numpy,pandas] --> i[协程原理] --> o[python运维 ansible, fabric] --> p[pyqt]
 ```
 
 #### 3.5 Celery/rabbitmq问题
@@ -113,8 +113,8 @@ graph TB
 ```mermaid
 graph TB
     a[虚拟机和容器区别] --> d[如何启动一个docker容器] --> g[docker网络模式] --> j[docker-compose]
-    b[容器的优点] --> e[如何进入到一个docker容器] --> h[docker镜像打包优化] --> k[docker的底层原理]
-    c[docker最佳实践] --> f[docker容器启动失败,问题排查] --> i[docker容器的通信原理] --> l[k8s的Pod问题]
+    b[容器的优点] --> e[如何进入到一个docker容器] --> h[docker镜像打包优化] --> k[docker如何做到资源隔离和资源控制]
+    c[容器的两大关键技术] --> f[docker容器启动失败,问题排查] --> i[docker容器的通信原理] --> l[容器启动后,提示找不到服务,怎么解决]
 ```
 
 #### 3.8 分布式，微服务，架构问题(可选)
