@@ -77,7 +77,7 @@ graph TB
 ```mermaid
 graph TB
     a[设置key的过期时间] --> d[redis和数据库区别] --> g[redis的字符串和python的str有什么区别] --> j[如何用redis实现热门访问记录]
-    b[列举redis的常用数据类型和应用场景] --> e[redis的数据如何持久化] --> h[如何使用redis实现广播] --> k[哨兵模式]
+    b[列举redis的常用数据类型和应用场景] --> e[redis的数据如何持久化] --> h[如何使用redis实现广播] --> k[pipeline和multi区别] --> m[哨兵模式/cluster]
     c[redis为什么这么快] --> f[redis变慢的原因] --> i[redis的zset底层实现] --> l[redis分布式锁原理]
 ```
 ##### 3.4.2 mysql的问题
