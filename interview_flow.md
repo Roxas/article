@@ -136,7 +136,7 @@ graph TB
 graph TB
     a[虚拟机和容器区别] --> d[如何启动一个docker容器] --> g[如何制作一个docker镜像] --> j[如何查看docker容器日志]
     b[容器的优点] --> e[定位容器挂载目录] --> h[docker镜像打包优化] --> k[docker网络模式/docker0的作用]
-    c[容器的两大关键技术] --> f[docker容器启动失败,问题排查] --> i[docker容器网络通信原理] --> l[解释docker最佳实践]
+    c[容器实现的三个关键技术] --> f[docker容器启动失败,问题排查] --> i[docker容器网络通信原理] --> l[容器编排compose/k8s]
 ```
 
 #### 3.8 分布式，微服务，架构问题(可选)
